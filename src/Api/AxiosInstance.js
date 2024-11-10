@@ -1,6 +1,5 @@
 import axios from "axios";
 import Cookie from "cookie-universal";
-import { toast } from "react-toastify";
 
 const cookie = Cookie();
 const baseUrl = "http://127.0.0.1:8000/api";
@@ -26,7 +25,7 @@ axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
-      toast.error("Unauthorized access", { toastId: "unauthorized-error" });
+      console.log(error.response.data.message);
     }
     return Promise.reject(error);
   }

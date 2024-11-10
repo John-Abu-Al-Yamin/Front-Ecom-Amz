@@ -1,0 +1,34 @@
+.active{
+    background: #F2F3FE;
+    color: #038edc;
+}
+/* For smooth transition */
+.sidebar {
+    transition: all 0.3s ease-in-out;
+  }
+  
+  /* When Sidebar is open, apply the animation */
+  .sidebar-open {
+    transform: translateX(0);
+    width: 220px;
+  }
+  
+  .sidebar-closed {
+    transform: translateX(-100%);
+    width: 60px;
+  }
+  
+  .sidebar-links {
+    transition: opacity 0.3s ease-in-out;
+  }
+  
+  /* Additional Styles for smoother hover effects */
+  .sidebar a:hover {
+    background-color: #f2f3fe;
+    color: #038edc;
+  }
+  
+  .sidebar span {
+    transition: opacity 0.3s ease-in-out;
+  }
+  

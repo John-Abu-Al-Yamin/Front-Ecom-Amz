@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Cookie from "cookie-universal";
 import { REGISTER } from "../../Api/Api";
+import { FaGoogle } from "react-icons/fa";
 
 const Register = () => {
   const [form, setForm] = useState({ name: "", email: "", password: "" });
@@ -23,7 +24,7 @@ const Register = () => {
       const response = await axiosInstance.post(`/${REGISTER}`, form);
       const token = response.data.token;
       cookie.set("access_token", token);
-      navigate("/users");
+      navigate("/dashboard/users");
       toast.success("Registration successful");
     } catch (error) {
       console.error("Error:", error);
@@ -103,7 +104,16 @@ const Register = () => {
             />
           </div>
 
-          
+          <div className="mb-4">
+            <a
+              href={`http://127.0.0.1:8000/login-google`}
+              target="_blank"
+              className="flex items-center justify-center w-full py-2 text-center bg-white border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-400"
+            >
+              <FaGoogle className="mr-2 text-red-500" />
+              <span>Register with Google</span>
+            </a>
+          </div>
 
           <button
             disabled={loading}

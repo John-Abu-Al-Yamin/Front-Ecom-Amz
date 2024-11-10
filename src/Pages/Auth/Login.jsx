@@ -24,7 +24,7 @@ const Login = () => {
       const response = await axiosInstance.post(`/${LOGIN}`, form);
       const token = response.data.token;
       cookie.set("access_token", token);
-      navigate("/users");
+      navigate("/dashboard/users");
       toast.success("Login successful");
     } catch (error) {
       console.error("Error:", error);
