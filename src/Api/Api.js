@@ -7,3 +7,5 @@ export const GOOGLE_CALLBACK = "auth/google/callback";
 // users
 export const USERS = "users";
 export const USER="user";
+export const CAT = "categories";
+export const Cat= "category";

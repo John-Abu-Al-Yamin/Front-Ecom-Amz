@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axiosInstance from "../../Api/AxiosInstance";
 import { RiLoaderFill } from "react-icons/ri";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom"; // Import Link
 import { toast } from "react-toastify";
 import Cookie from "cookie-universal";
 import { REGISTER } from "../../Api/Api";
@@ -24,7 +24,7 @@ const Register = () => {
       const response = await axiosInstance.post(`/${REGISTER}`, form);
       const token = response.data.token;
       cookie.set("access_token", token);
-      navigate("/dashboard/users");
+      navigate("/dashboard");
       toast.success("Registration successful");
     } catch (error) {
       console.error("Error:", error);
@@ -58,7 +58,7 @@ const Register = () => {
               id="name"
               value={form.name}
               onChange={handleChange}
-              className=" w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Enter your name"
               required
               min={2}
@@ -127,6 +127,13 @@ const Register = () => {
             )}
           </button>
         </form>
+
+        <div className="mt-4 text-center">
+          <span className="text-gray-600">Already have an account? </span>
+          <Link to="/login" className="text-blue-500 hover:underline">
+            Login here
+          </Link>
+        </div>
       </div>
     </div>
   );

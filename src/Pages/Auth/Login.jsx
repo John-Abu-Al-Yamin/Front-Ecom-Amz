@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axiosInstance from "../../Api/AxiosInstance";
 import { RiLoaderFill } from "react-icons/ri";
-import { FaGoogle } from "react-icons/fa"; // استيراد أيقونة Google
-import { useNavigate } from "react-router-dom";
+import { FaGoogle } from "react-icons/fa";
+import { useNavigate, Link } from "react-router-dom"; // Import Link
 import { toast } from "react-toastify";
 import Cookie from "cookie-universal";
 import { LOGIN } from "../../Api/Api";
@@ -23,8 +23,10 @@ const Login = () => {
     try {
       const response = await axiosInstance.post(`/${LOGIN}`, form);
       const token = response.data.token;
+      const role = response.data.user.role;
+      const go = role === "1995" ? "/users" : "/writer";
       cookie.set("access_token", token);
-      navigate("/dashboard/users");
+      navigate(`/dashboard${go}`);
       toast.success("Login successful");
     } catch (error) {
       console.error("Error:", error);
@@ -90,7 +92,7 @@ const Login = () => {
               target="_blank"
               className="flex items-center justify-center w-full py-2 text-center bg-white border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-400"
             >
-              <FaGoogle className="mr-2 text-red-500" /> 
+              <FaGoogle className="mr-2 text-red-500" />
               <span>Login with Google</span>
             </a>
           </div>
@@ -107,6 +109,13 @@ const Login = () => {
             )}
           </button>
         </form>
+
+        <div className="mt-4 text-center">
+          <span className="text-gray-600">Don't have an account? </span>
+          <Link to="/register" className="text-blue-500 hover:underline">
+            Register here
+          </Link>
+        </div>
       </div>
     </div>
   );
