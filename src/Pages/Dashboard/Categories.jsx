@@ -29,11 +29,15 @@ const Categories = () => {
 
   const handleDelete = async (userId) => {
     try {
+      setLoading(false)
       await axiosInstance.delete(`/${Cat}/${userId}`);
+      toast.success("Category deleted")
       getUsers();
     } catch (error) {
       console.error("Error deleting user:", error);
       toast.error("Error deleting user. Please try again later.");
+    } finally {
+      setLoading(true)
     }
   };
 

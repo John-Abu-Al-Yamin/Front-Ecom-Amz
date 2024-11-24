@@ -22,6 +22,12 @@ const TableShow = ({ header, data, onDelete, currentUser }) => {
         {item.name}
       </th>
     )),
+    <th
+      key="actions"
+      className="px-6 py-4 text-center text-sm font-bold text-gray-700 border-b"
+    >
+      Actions
+    </th>, // إضافة عمود "Actions"
   ];
 
   // Define the table rows
@@ -31,21 +37,18 @@ const TableShow = ({ header, data, onDelete, currentUser }) => {
       {header?.map((col) => (
         <td key={col.key} className="px-6 py-4 text-sm text-gray-700 border-b">
           {/* Render the value in the appropriate way */}
-          {col.key === "image" && <img src={row[col.key]} alt="" className="w-10 h-10"/>}
-          {row[col.key] === "1995"
-            ? "Admin"
-            : row[col.key] === "2001"
-            ? "User"
-            : row[col.key] === "1996"
-            ? "Writer"
-            : row[col.key] === "1999"
-            ? "Product Manager"
-            : row[col.key]}
-          {row[col.key] === safeCurrentUser.name && (
-            <span className="font-bold text-blue-500"> (You)</span>
+          {col.key === "image" ? (
+            <img
+              src={row[col.key]}
+              alt="Category"
+              className="w-16 h-16 object-cover"
+            />
+          ) : (
+            row[col.key]
           )}
         </td>
       ))}
+
       <td className="px-6 py-4 text-center border-b flex gap-2 justify-center">
         {/* Edit button */}
         <Link
@@ -54,8 +57,8 @@ const TableShow = ({ header, data, onDelete, currentUser }) => {
         >
           <FaEdit /> Edit
         </Link>
-        {/* Delete button */}
-        {safeCurrentUser.name !== row.name && (
+        {/* Delete button (disabled for the current user) */}
+        {row.id !== safeCurrentUser.id && (
           <button
             onClick={() => onDelete(row.id)}
             className="flex items-center gap-2 px-3 py-2 text-sm font-semibold text-white bg-red-500 rounded-md shadow-md hover:bg-red-600 hover:scale-105 transition-transform duration-200"
@@ -71,12 +74,7 @@ const TableShow = ({ header, data, onDelete, currentUser }) => {
     <div className="overflow-x-auto">
       <table className="min-w-full bg-white border border-gray-300 rounded-lg shadow-md">
         <thead className="bg-gray-200">
-          <tr>
-            {headerShow}
-            <th className="px-6 py-4 text-center text-sm font-bold text-gray-700 border-b">
-              Actions
-            </th>
-          </tr>
+          <tr>{headerShow}</tr>
         </thead>
         <tbody>{dataShow}</tbody>
       </table>

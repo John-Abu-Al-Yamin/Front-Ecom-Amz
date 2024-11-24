@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../Api/AxiosInstance";
-import { CAT ,Cat} from "../../Api/Api";
+import { CAT, Cat } from "../../Api/Api";
 import { FiLoader } from "react-icons/fi";
 import { FaImage } from "react-icons/fa";
 import { toast } from "react-toastify";
@@ -66,30 +66,31 @@ const AddCategory = () => {
         </div>
 
         {/* Image Input */}
-        <div className="mb-4 w-2/4">
-          <label
-            htmlFor="image"
-            className=" text-gray-700 font-medium mb-2 flex items-center gap-2"
-          >
-            <FaImage className="text-blue-500" />
-            Upload Image
-          </label>
-          <input
-            type="file"
-            id="image"
-            name="image"
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
-            accept="image/*"
-            onChange={(e) => setImage(e.target.files.item(0))}
-          />
-        </div>
+        {loading ? (
+          <div className="w-3/6 px-4 py-4 bg-gray-300 rounded-md animate-pulse" />
+        ) : (
+          <div className="mb-4 w-2/4">
+            <label
+              htmlFor="image"
+              className="text-gray-700 font-medium mb-2 flex items-center gap-2"
+            >
+              <FaImage className="text-blue-500" />
+              Upload Image
+            </label>
+            <input
+              type="file"
+              id="image"
+              name="image"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+              accept="image/*"
+              onChange={(e) => setImage(e.target.files.item(0))}
+            />
+          </div>
+        )}
 
         <div>
-          
-        <button
-            disabled={
-              title.length < 1 || image === null
-            }
+          <button
+            disabled={title.length < 1 || image === null}
             type="submit"
             className={`w-32 font-medium py-2 rounded-md flex justify-center items-center transition duration-300 ${
               loading
