@@ -9,3 +9,7 @@ export const USERS = "users";
 export const USER="user";
 export const CAT = "categories";
 export const Cat= "category";
+
+export const PRO = "products";
+export const Pro = "product";
+

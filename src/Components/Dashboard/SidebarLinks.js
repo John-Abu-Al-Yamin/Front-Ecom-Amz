@@ -29,6 +29,12 @@ const sidebarLinks = [
     role: ["1995", "1999"]
   },
   {
+    to: "products",
+    icon: IoAdd,
+    label: "Add Product",
+    role: ["1995", "1999"]
+  },
+  {
     to: "writer",
     icon: SiLibreofficewriter,
     label: "Writer",
