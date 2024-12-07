@@ -1,52 +1,67 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../../Api/AxiosInstance";
-import { CAT, Cat } from "../../../Api/Api";
+import { PRO, Pro, CAT, Cat } from "../../../Api/Api";
 import { FiLoader } from "react-icons/fi";
 import { FaImage } from "react-icons/fa";
 import { toast } from "react-toastify";
 
 const AddProducts = () => {
   const [loading, setLoading] = useState(false);
-  const [image, setImage] = useState(null);
-  const [categories, setCategories] = useState([]);
+  const [images, setImages] = useState(null);
+  const [category, setCategory] = useState([]);
   const [form, setForm] = useState({
     category: "",
     title: "",
     description: "",
     price: "",
     discount: "",
-    about: "",
+    About: "",
   });
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Fetch categories for the dropdown
-    const fetchCategories = async () => {
+    const get_Categories = async () => {
       try {
         const response = await axiosInstance.get(`/${CAT}`);
-        setCategories(response.data.categories || []);
+        setCategory(response.data || []);
       } catch (error) {
         console.error("Error fetching categories:", error);
       }
     };
-    fetchCategories();
+    get_Categories();
   }, []);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm({ ...form, [name]: value });
+  const cateShow = () => {
+    return category.map((cat) => (
+      <option key={cat.id} value={cat.id}>
+        {cat.title}
+      </option>
+    ));
   };
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+  console.log(form);
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append("form", JSON.stringify(form));
-    formData.append("image", image);
+    const data = new FormData();
+    data.append("category", form.category);
+    data.append("title", form.title);
+    data.append("description", form.description);
+    data.append("price", form.price);
+    data.append("discount", form.discount);
+    data.append("About", form.About);
+
+    for (let i = 0; i < images.length; i++) {
+      data.append("images[]", images[i]);
+    }
 
     try {
       setLoading(true);
-      const response = await axiosInstance.post(`/${Cat}/add`, formData, {
+      const response = await axiosInstance.post(`/${Pro}/add`, data, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -61,6 +76,15 @@ const AddProducts = () => {
       setLoading(false);
     }
   };
+
+  const imagesShow = images?.map((img, index) => (
+    <img
+      key={index}
+      src={URL.createObjectURL(img)}
+      alt={`Image ${index}`}
+      className="w-20 h-20 object-cover rounded-md mr-2 "
+    />
+  ));
 
   return (
     <div className="w-full">
@@ -85,13 +109,9 @@ const AddProducts = () => {
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
           >
             <option value="" disabled>
-              Select a category
+              select category
             </option>
-            {categories.map((cat) => (
-              <option key={cat.id} value={cat.id}>
-                {cat.name}
-              </option>
-            ))}
+            {cateShow()}
           </select>
         </div>
 
@@ -135,7 +155,10 @@ const AddProducts = () => {
 
         {/* Price Input */}
         <div className="mb-4 w-2/4">
-          <label htmlFor="price" className="block text-gray-700 font-medium mb-2">
+          <label
+            htmlFor="price"
+            className="block text-gray-700 font-medium mb-2"
+          >
             Price
           </label>
           <input
@@ -178,8 +201,8 @@ const AddProducts = () => {
           </label>
           <textarea
             id="about"
-            name="about"
-            value={form.about}
+            name="About"
+            value={form.About}
             onChange={handleChange}
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
             placeholder="Write about the product"
@@ -198,25 +221,28 @@ const AddProducts = () => {
           </label>
           <input
             type="file"
+            multiple
             id="image"
-            name="image"
+            name="images"
+            accept="images/*"
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
-            accept="image/*"
-            onChange={(e) => setImage(e.target.files.item(0))}
+            onChange={(e) => setImages([...e.target.files])}
           />
         </div>
 
+        {/* show images */}
+        <div className="flex gap-2 items-center my-3">{imagesShow}</div>
         {/* Submit Button */}
         <div>
           <button
-            disabled={!form.title || !form.category || !image}
+            disabled={!form.title || !form.category}
             type="submit"
             className={`w-32 font-medium py-2 rounded-md flex justify-center items-center transition duration-300 ${
               loading
                 ? "bg-blue-500 text-white"
                 : "hover:bg-blue-600 text-white"
             } ${
-              !form.title || !form.category || !image
+              !form.title || !form.category
                 ? "bg-gray-300 text-gray-500 cursor-not-allowed hover:bg-gray-400"
                 : "bg-blue-500"
             }`}
